@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { shade } from 'polished';
 
 export const Conteiner = styled.button`
-  background: #ff9000;
+  background: #b4e33d;
   height: 56px;
   border-radius: 10px;
   border: 0;
@@ -14,6 +14,6 @@ export const Conteiner = styled.button`
   transition: background-color 0, 2s;
 
   &:hover {
-    background: ${shade(0.2, '#ff9000')};
+    background: ${shade(0.2, '#b4e33d')};
   }
 `;
