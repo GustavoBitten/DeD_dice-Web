@@ -1,8 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import * as Yup from 'yup';
 
-import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
-import { FaDiceD20 } from 'react-icons/fa';
+import { FiArrowLeft } from 'react-icons/fi';
 import {
   GiRollingDices,
   GiPerspectiveDiceSixFacesRandom,
