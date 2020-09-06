@@ -29,6 +29,20 @@ const appearFromRight = keyframes`
     transform: translateX(0);
   }
 `;
+export const Result = styled.div`
+  width: 100%;
+  max-height: 500px;
+  overflow: auto;
+  text-align: center;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  h1 {
+    margin-bottom: 8px;
+  }
+`;
 
 export const AnimationContainer = styled.div`
   display: flex;
@@ -38,7 +52,7 @@ export const AnimationContainer = styled.div`
   animation: ${appearFromRight} 2s;
 
   form {
-    margin: 80px 0;
+    margin: 80px 0 20px;
     width: 340px;
     text-align: center;
 

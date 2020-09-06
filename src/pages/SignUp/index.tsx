@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import * as Yup from 'yup';
 
 import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
@@ -14,18 +14,26 @@ import { Link, useHistory } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Content, AnimationContainer } from './styles';
+import { Container, Content, AnimationContainer, Result } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
 import { useToast } from '../../hooks/toast';
 import api from '../../services/api';
+import Output from '../../components/Output';
 
 interface SingUpFormData {
-  name: string;
-  email: string;
-  password: string;
+  sidesDice: number;
+  numberDices: number;
 }
+
+interface ResultDices {
+  value: number;
+  order: number;
+  type: string;
+}
+
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const [resultsDices, setResultsDices] = useState<ResultDices[]>([]);
 
   const { addToast } = useToast();
 
@@ -45,19 +53,21 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
-        await api.post('/', data);
+        const resultApi = await api.post('/', data);
+        console.log(resultApi);
+
+        setResultsDices(resultApi.data);
 
         history.push('/');
 
         addToast({
-          title: 'Cadastro realizado com sucesso',
+          title: 'Dados rodados com sucesso',
           type: 'success',
-          description: 'Você já pode relizar seu logon',
+          description: 'Olhe os resultados abaixo',
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
-          console.log(err);
 
           formRef.current?.setErrors(errors);
 
@@ -96,6 +106,15 @@ const SignUp: React.FC = () => {
 
             <Button type="submit">Gerar dados</Button>
           </Form>
+          <Result>
+            {!!resultsDices.length && <h1>Seus resultados</h1>}
+
+            {resultsDices.map(dice => {
+              return (
+                <Output>{`${dice.type} ___ nº ${dice.order} ___ valor: [ ${dice.value} ] `}</Output>
+              );
+            })}
+          </Result>
 
           <Link to="/">
             <FiArrowLeft />
