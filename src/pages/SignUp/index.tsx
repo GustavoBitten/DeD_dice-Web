@@ -74,7 +74,7 @@ const SignUp: React.FC = () => {
         }
 
         addToast({
-          title: 'Deu errado no cadastro',
+          title: 'Deu errado',
           type: 'error',
           description: 'Tentar novamente',
         });
