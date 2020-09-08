@@ -20,7 +20,7 @@ export const Content = styled.div`
 const appearFromRight = keyframes`
   from {
     opacity: 0;
-    transform: rotate(4turn);
+    transform: rotate(0.05turn);
   }
   to {
     opacity: 1;

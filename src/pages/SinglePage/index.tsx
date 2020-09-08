@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 
 import { GoPerson } from 'react-icons/go';
@@ -9,7 +9,6 @@ import {
 } from 'react-icons/gi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import { useHistory } from 'react-router-dom';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -50,10 +49,10 @@ const SinglePage: React.FC = () => {
   const [userName, setUserName] = useState(() => {
     return localStorage.getItem('@DDdice:name') || '';
   });
-
+  useEffect(() => {
+    api.get('/history').then(result => setResultsDices(result.data));
+  }, []);
   const { addToast } = useToast();
-
-  const history = useHistory();
 
   const shortcutDices = [4, 8, 10, 12, 20, 100];
 
@@ -75,9 +74,8 @@ const SinglePage: React.FC = () => {
 
         const resultApi = await api.post('/', data);
 
-        setResultsDices(resultApi.data);
 
-        history.push('/');
+        setResultsDices([...resultApi.data, ...resultsDices]);
 
         addToast({
           title: 'Dados rodados com sucesso',
@@ -100,7 +98,7 @@ const SinglePage: React.FC = () => {
         });
       }
     },
-    [addToast, history, userName],
+    [addToast, userName, resultsDices],
   );
 
   return (
