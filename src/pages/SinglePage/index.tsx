@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import * as Yup from 'yup';
 
-import { FiArrowLeft } from 'react-icons/fi';
 import { GoPerson } from 'react-icons/go';
 
 import {
@@ -10,7 +9,7 @@ import {
 } from 'react-icons/gi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -64,7 +63,6 @@ const SinglePage: React.FC = () => {
         });
 
         const resultApi = await api.post('/', data);
-        console.log(resultApi);
 
         setResultsDices(resultApi.data);
 
