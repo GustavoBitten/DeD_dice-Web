@@ -6,9 +6,10 @@ export const Conteiner = styled.div`
   border-radius: 10px;
   border: 2px solid #232129;
   padding: 16px;
-  width: 100%;
   align-items: center;
-  color: #fff;
+  color: #d2cbc5;
+  justify-content: center;
+  width: fit-content;
 
   & + div {
     margin-top: 8px;
