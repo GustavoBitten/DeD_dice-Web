@@ -36,16 +36,20 @@ interface SingUpFormData {
 }
 
 interface ResultDices {
-  value: number;
-  order: number;
+  value: number | string;
+  order: number | string;
   type: string;
   name: string;
 }
 
 const SinglePage: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const [resultsDices, setResultsDices] = useState<ResultDices[]>([]);
-  const [userName, setUserName] = useState('');
+  const [resultsDices, setResultsDices] = useState<ResultDices[]>([
+    { name: 'Sem resultado', order: '', type: '', value: '' },
+  ]);
+  const [userName, setUserName] = useState(() => {
+    return localStorage.getItem('@DDdice:name') || '';
+  });
 
   const { addToast } = useToast();
 
@@ -125,7 +129,10 @@ const SinglePage: React.FC = () => {
                 <Button type="submit">Lançar dados</Button>
                 <Input
                   value={userName}
-                  onChange={e => setUserName(e.target.value)}
+                  onChange={e => {
+                    setUserName(e.target.value);
+                    localStorage.setItem('@DDdice:name', e.target.value);
+                  }}
                   type="text"
                   name="name"
                   icon={GoPerson}
