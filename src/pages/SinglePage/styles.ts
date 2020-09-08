@@ -20,7 +20,7 @@ export const Content = styled.div`
 const appearFromRight = keyframes`
   from {
     opacity: 0;
-    /* transform: rotate(4turn); */
+    transform: rotate(4turn);
   }
   to {
     opacity: 1;
@@ -116,11 +116,20 @@ export const Sections = styled.div`
   }
 `;
 
+export const Copyright = styled.div`
+  position: fixed;
+  bottom: 10px;
+  left: 25px;
+  a {
+    color: #fff;
+  }
+`;
+
 export const AnimationContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  animation: ${appearFromRight} 1s;
+  animation: ${appearFromRight} 0.5s;
 `;
 
 export const Background = styled.div`

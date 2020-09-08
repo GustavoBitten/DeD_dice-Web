@@ -20,6 +20,7 @@ import {
   AnimationContainer,
   Title,
   Sections,
+  Copyright,
 } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
 import { useToast } from '../../hooks/toast';
@@ -37,6 +38,7 @@ interface ResultDices {
   value: number;
   order: number;
   type: string;
+  name: string;
 }
 
 const SinglePage: React.FC = () => {
@@ -139,15 +141,19 @@ const SinglePage: React.FC = () => {
               {resultsDices.map(dice => {
                 return (
                   <Output>
-                    <span>Gustavo</span>
-                    <span>D-2</span>
-                    <span>Nº 1</span>
-                    <span>Valor [2]</span>
+                    <span>{`${dice.name}`}</span>
+                    <span>{`${dice.type}`}</span>
+                    <span>{`Nº ${dice.order}`}</span>
+                    <span>{`Valor [ ${dice.value} ]`}</span>
                   </Output>
                 );
               })}
             </div>
           </Sections>
+          <Copyright>
+            Made with Love by GustavoBitten &nbsp;
+            <a href="https://github.com/GustavoBitten">(Github)</a>
+          </Copyright>
         </AnimationContainer>
       </Content>
     </Container>
