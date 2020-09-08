@@ -31,7 +31,8 @@ import './style_dev.css';
 
 interface SingUpFormData {
   sidesDice: number;
-  numberDices: number;
+  numberDices?: number;
+  name?: string;
 }
 
 interface ResultDices {
@@ -44,19 +45,23 @@ interface ResultDices {
 const SinglePage: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [resultsDices, setResultsDices] = useState<ResultDices[]>([]);
+  const [userName, setUserName] = useState('');
 
   const { addToast } = useToast();
 
   const history = useHistory();
 
+  const shortcutDices = [4, 8, 10, 12, 20, 100];
+
   const handleSubmit = useCallback(
-    async (data: SingUpFormData) => {
+    async ({ name = userName, numberDices = 1, sidesDice }: SingUpFormData) => {
+      const data = { name, numberDices, sidesDice };
       try {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           sidesDice: Yup.number().integer('res'),
-          numberDices: Yup.number().required('E-mail obrigatório'),
+          numberDices: Yup.number().required(''),
           name: Yup.string().required(),
         });
 
@@ -91,7 +96,7 @@ const SinglePage: React.FC = () => {
         });
       }
     },
-    [addToast, history],
+    [addToast, history, userName],
   );
 
   return (
@@ -119,6 +124,8 @@ const SinglePage: React.FC = () => {
                 />
                 <Button type="submit">Lançar dados</Button>
                 <Input
+                  value={userName}
+                  onChange={e => setUserName(e.target.value)}
                   type="text"
                   name="name"
                   icon={GoPerson}
@@ -128,12 +135,20 @@ const SinglePage: React.FC = () => {
             </div>
             <div>
               <Output>Automático</Output>
-              <Button type="submit">D-4</Button>
-              <Button type="submit">D-8</Button>
-              <Button type="submit">D-10</Button>
-              <Button type="submit">D-12</Button>
-              <Button type="submit">D-20</Button>
-              <Button type="submit">D-100</Button>
+              {shortcutDices.map(value => {
+                return (
+                  <Button
+                    onClick={() =>
+                      handleSubmit({
+                        sidesDice: value,
+                      })}
+                    type="submit"
+                  >
+                    D-
+                    {value}
+                  </Button>
+                );
+              })}
             </div>
             <div>
               <Output> Histórico</Output>
