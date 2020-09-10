@@ -1,6 +1,8 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 
+import io from 'socket.io-client';
+
 import { GoPerson } from 'react-icons/go';
 
 import {
@@ -28,6 +30,11 @@ import Output from '../../components/Output';
 
 import './style_dev.css';
 
+const socket = io('https://dddice.herokuapp.com');
+socket.on('connect', () =>
+  console.log('[IO] Connect => A new connection has been established'),
+);
+
 interface SingUpFormData {
   sidesDice: number;
   numberDices?: number;
@@ -49,12 +56,21 @@ const SinglePage: React.FC = () => {
   const [userName, setUserName] = useState(() => {
     return localStorage.getItem('@DDdice:name') || '';
   });
-  useEffect(() => {
-    api.get('/history').then(result => setResultsDices(result.data));
-  }, []);
   const { addToast } = useToast();
 
   const shortcutDices = [4, 8, 10, 12, 20, 100];
+  useEffect(() => {
+    api.get('/history').then(result => setResultsDices(result.data));
+  }, []);
+
+  useEffect((): any => {
+    console.log('test stability');
+    socket.on('dice', (test: ResultDices[]) => {
+      console.log(test[0]);
+      setResultsDices([...test, ...resultsDices]);
+    });
+    return () => socket.off('dice');
+  }, [resultsDices]);
 
   const handleSubmit = useCallback(
     async ({ name = userName, numberDices = 1, sidesDice }: SingUpFormData) => {
@@ -74,8 +90,7 @@ const SinglePage: React.FC = () => {
 
         const resultApi = await api.post('/', data);
 
-
-        setResultsDices([...resultApi.data, ...resultsDices]);
+        socket.emit('dice', resultApi.data);
 
         addToast({
           title: 'Dados rodados com sucesso',
@@ -98,7 +113,7 @@ const SinglePage: React.FC = () => {
         });
       }
     },
-    [addToast, userName, resultsDices],
+    [addToast, userName],
   );
 
   return (
@@ -146,7 +161,8 @@ const SinglePage: React.FC = () => {
                     onClick={() =>
                       handleSubmit({
                         sidesDice: value,
-                      })}
+                      })
+                    } // eslint-disable-line
                     type="submit"
                   >
                     D-

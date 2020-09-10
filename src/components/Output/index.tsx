@@ -5,11 +5,12 @@ import { Conteiner } from './styles';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
+  newDice?: boolean;
 }
 
-const Output: React.FC<InputProps> = ({ children }) => {
+const Output: React.FC<InputProps> = ({ children, newDice }) => {
   return (
-    <Conteiner>
+    <Conteiner newDice={newDice}>
       <p>{children}</p>
     </Conteiner>
   );
