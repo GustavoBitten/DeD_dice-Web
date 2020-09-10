@@ -64,9 +64,7 @@ const SinglePage: React.FC = () => {
   }, []);
 
   useEffect((): any => {
-    console.log('test stability');
     socket.on('dice', (test: ResultDices[]) => {
-      console.log(test[0]);
       setResultsDices([...test, ...resultsDices]);
     });
     return () => socket.off('dice');
